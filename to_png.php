@@ -11,7 +11,7 @@ $ysize = $lat_stop-$lat_start;
 
 $im = imagecreatetruecolor($xsize, $ysize);
 $blue = imagecolorallocate($im, 0, 0, 200); 
-$white = imagecolorallocate($im, 0, 0, 0); 
+$black = imagecolorallocate($im, 0, 0, 0); 
 
 $scale[] = imagecolorallocate($im, 255, 255, 217); 
 $scale[] = imagecolorallocate($im, 237, 248, 177); 
@@ -25,7 +25,7 @@ $scale[] = imagecolorallocate($im, 12, 44, 132);
 
 
 
-imagefill($im, 0, 0, $white);
+imagefill($im, 0, 0, $black);
 
 $row=0;
 if (($handle = fopen("count.csv", "r")) !== FALSE) {
@@ -49,12 +49,13 @@ if (($handle = fopen("count.csv", "r")) !== FALSE) {
 
 	imagesetpixel($im, $lon, $lat, $scale[$color]);
 
-	echo "$row\t";
+	//echo "$row\t";
         $row++;
     }
     fclose($handle);
 }
-
+header('Content-Type: image/png');
+imagecolortransparent($im, $black);
 imagepng($im, "out.png");
 imagedestroy($im);
 
