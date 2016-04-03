@@ -1,10 +1,21 @@
+#!/usr/bin/php
 <?php
+
+if (isset($argv[1])) {
+  $igcDir = $argv[1];
+  fwrite(STDERR,"Using '$igcDir' as output firectory for IGC files.\n");
+} else {  
+  fwrite(STDERR,"No output directory specified, using 'igc/'.\n");
+  $igcDir = 'igc';
+}         
+
 $nt=0;
 $n=0;
 $data = array();
-//30700
-for ($fi=0; $fi<26801; $fi++) {
-  $handle = fopen("2009/$fi.igc", "r");
+
+$dirh = opendir($igcDir);
+while (false !== ($entry = readdir($dirh))) {
+  $handle = fopen("$igcDir/$entry", "r");
   if ($handle) {
       while (($line = fgets($handle, 4096)) !== false) {
 	  $nt++;
@@ -46,15 +57,36 @@ for ($fi=0; $fi<26801; $fi++) {
 	  // lat : 3500 > 5599 -3500
 	  //echo $line;
 	  //printf("%s\t%s\t%s\t%s\t%s\t%s\n", $lat_deg, $lat_min, $lon_deg, $lon_min, $lat, $lon);
-	  $n++;
-      }
-      if (!feof($handle)) {
-	  echo "Error: unexpected fgets() fail\n";
-      }
-      fclose($handle);
-	echo "$fi\t";
-      //printf("%d:\t%d\t%d\t%f\n", $fi, $n, $nt, $n/$nt*100);
+     $n++;
+    }
+    if (!feof($handle)) {
+      echo "Error: unexpected fgets() fail\n";
+    }
+    fclose($handle);
+    echo "$entry\n";
+    //printf("%d:\t%d\t%d\t%f\n", $fi, $n, $nt, $n/$nt*100);
   }
 }
+
+// Generate csv file:
+$fp = fopen('count.csv', 'w');
+
+$line = array("lat", "lon", "count");
+fputcsv($fp, $line);
+
+$i = 1;
+
+foreach ($data as $lon=>$data2) {
+        foreach ($data2 as $lat=>$count) {
+                $line = array(intval($lat), intval($lon), $count);
+                fputcsv($fp, $line);
+                echo "Csv $i\n";
+                $i++;
+        }
+}
+
+
+fclose($fp);
+
 
 ?>
