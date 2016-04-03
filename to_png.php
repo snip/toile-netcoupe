@@ -1,3 +1,4 @@
+#!/usr/bin/php
 <?php
 
 $lat_start = 3500;
