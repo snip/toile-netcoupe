@@ -11,7 +11,6 @@ $ysize = $lat_stop-$lat_start;
 
 
 $im = imagecreatetruecolor($xsize, $ysize);
-$blue = imagecolorallocate($im, 0, 0, 200); 
 $black = imagecolorallocate($im, 0, 0, 0); 
 
 $scale[] = imagecolorallocate($im, 255, 255, 217); 
