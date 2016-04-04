@@ -3,7 +3,7 @@
 
 if (isset($argv[1])) {
   $igcDir = $argv[1];
-  fwrite(STDERR,"Using '$igcDir' as output firectory for IGC files.\n");
+  fwrite(STDERR,"Using '$igcDir' as output directory for IGC files.\n");
 } else {  
   fwrite(STDERR,"No output directory specified, using 'igc/'.\n");
   $igcDir = 'igc';
